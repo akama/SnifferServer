@@ -1,0 +1,130 @@
+<html>
+	<head>
+		<title> Hello World! </title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js">
+		</script>
+		<link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css'>
+		<script>
+			$( document ).ready(function() {
+				window.RELOAD_TIME = 3000;
+				window.ANIMATION_TIME = 400;
+				window.UNIT_HEIGHT = 55;
+				//var count = 1;
+				var refreshPackets = 0;
+
+				$.getJSON( "/packets/limit/10", bulkAdd);
+
+				setInterval(function() {
+				$.getJSON("/packets/limit/" + Math.floor(window.RELOAD_TIME / 1000), bulkUpdate);
+					//window.ANIMATION_TIME = (window.RELOAD_TIME/refreshPackets.length);
+					// for (var i = 0; i < refreshPackets.length; i++) { 
+                    //	//console.log(refreshPackets[i])
+                    //	addElement(refreshPackets[i].id, refreshPackets[i].time, refreshPackets[i].location, refreshPackets[i].signal);
+					// }					
+					//limitPackets(10);
+				}, window.RELOAD_TIME); // the "3000"
+			});	
+
+			function limitPackets(hardLimit) {
+				var packets = $(".hashbar");
+				var times = packets.size() - hardLimit;
+				for (var i = 1; i < times; i++) {
+					packets[packets.size() - i].remove();
+				}
+			}
+
+			function bulkUpdate(collection) {
+				$( ".hashbar" ).animate({
+					top: "+=" + (window.UNIT_HEIGHT * collection.length),
+				}, window.ANIMATION_TIME);
+
+				setTimeout( function () {bulkAdd(collection);}, window.ANIMATION_TIME);
+			}
+
+			function bulkAdd(collection) {
+				for (var i = 0; i < collection.length; i++) {
+					//console.log(collection[i]);
+					var newPacket = idElement(collection[i].id, collection[i].time, collection[i].location, collection[i].signal);
+					newPacket.css("top", i * window.UNIT_HEIGHT);
+					$('#listPackets').append(newPacket);
+				}
+			}
+
+			function addElement(hash, time, location, signal) {
+				$( ".hashbar" ).animate({
+					top: "+=" + (window.UNIT_HEIGHT),
+				}, window.ANIMATION_TIME);
+
+				setTimeout(function() {
+					var newPacket = idElement(hash, time, location, signal);
+					$("#listPackets").append(newPacket);}, window.ANIMATION_TIME);
+			}
+
+			function idElement( hash, time, location, signal) {
+				var overall = $('<div>', {class : "hashbar"});
+				overall.append($('<p>', {text : hash.substring(1,30), class : "hash"}));
+				overall.append($('<p>', {text : time, class : "time"}));
+				overall.append($('<p>', {text : location, class : "location"}));
+				overall.append($('<p>', {text : signal, class : "signal"}));
+				//overall.append($('<hr>', {class : "bar"}));
+				
+				//console.log(overall);
+				return $('<div>', { class : "wrapper"}).append(overall); //overall;//$('<p>', {id : idNum, class : "textElement", text : message});
+			}
+		</script>
+		<style>
+		.wrapper {
+			position: absolute;
+		}
+		#listPackets {
+			position: relative;
+			left: 400px;
+			border-left: 1px solid black;
+		}
+		.hashbar {
+			background-color:#d0e4fe;
+			position:relative;			
+			font-family: 'Exo 2', sans-serif;
+			font-size: 14;
+			width: 400px;
+			height: 50px;
+		}
+		.hash {
+			position:absolute;
+			margin: 4px;
+			left: 0px;
+			top: 0px;
+		}
+		.time {
+			position:absolute;
+			margin: 4px;
+			left: 0px;
+			bottom: 0px;
+		}
+		.location {
+			position:absolute;
+			margin: 4px;
+			right: 0px;
+			top: 0px;
+		}
+		.signal {
+			position:absolute;
+			margin: 4px;
+			right: 0px;
+			bottom: 0px;
+		}
+		#links {
+			width: 100px;
+		}
+		</style>
+
+	</head>
+
+	<body>
+		<div id="links">
+			<p> HELLO WORLD </p>
+		</div>
+		<div id="listPackets">
+		</div>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+#icon {
+	height: 128px;
+	width: 128px;
+	margin-right: auto;
+	margin-left: auto;
+	display: block;
+}
+
+#sidebar {
+	border-right-style: solid;
+}
+
+.wrapper {
+	position: absolute;
+}
+#listPackets {
+	position: relative;
+	/*left: 400px;*/
+	border-left: 1px solid black;
+}
+.hashbar {
+	background-color:#d0e4fe;
+	position:relative;			
+	font-family: 'Exo 2', sans-serif;
+	font-size: 14;
+	width: 400px;
+	height: 50px;
+}
+.hash {
+	position:absolute;
+	margin: 4px;
+	left: 0px;
+	top: 0px;
+}
+.time {
+	position:absolute;
+	margin: 4px;
+	left: 0px;
+	bottom: 0px;
+}
+.location {
+	position:absolute;
+	margin: 4px;
+	right: 0px;
+	top: 0px;
+}
+.signal {
+	position:absolute;
+	margin: 4px;
+	right: 0px;
+	bottom: 0px;
+}
+#links {
+	width: 100px;
+}

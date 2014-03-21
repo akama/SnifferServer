@@ -1,0 +1,50 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-theme.min.css')
+    link(rel='stylesheet', href='/stylesheets/side_bar.css')
+    script(src='/javascripts/jquery-1.11.0.min.js')
+    script(src='/javascripts/bootstrap.min.js')
+    script(src='/javascripts/client_api.js')
+    script.
+        $( document ).ready(function() {
+            window.RELOAD_TIME = 3000;
+            window.ANIMATION_TIME = 400;
+            window.UNIT_HEIGHT = 55;
+            //var count = 1;
+            var refreshPackets = 0;
+
+            $.getJSON( "/packets/limit/10", bulkAdd);
+
+            setInterval(function() {
+            $.getJSON("/packets/limit/" + Math.floor(window.RELOAD_TIME / 1000), bulkUpdate);
+                //window.ANIMATION_TIME = (window.RELOAD_TIME/refreshPackets.length);
+                // for (var i = 0; i < refreshPackets.length; i++) { 
+                //  //console.log(refreshPackets[i])
+                //  addElement(refreshPackets[i].id, refreshPackets[i].time, refreshPackets[i].location, refreshPackets[i].signal);
+                // }                    
+                //limitPackets(10);
+            }, window.RELOAD_TIME); // the "3000"
+        }); 
+
+  body
+    div.container-fluid
+        div.row-fluid
+            div.col-md-3#sidebar
+                img(src="/images/circle-red.png")#icon
+                h1. Wifi Sniffer Project
+                p. This project is like a mini NSA
+                a(href="/sniffers_list") Historical Data per Sniffer
+                br
+                a(href="/sniffers_graph") People per Sniffer
+                br
+                a(href="/search_id") Search by ID
+                br
+                a(href="/alerts") Show Alerts
+            div.col-md-5
+                block content
+            div.col-md-4
+                div#listPackets
